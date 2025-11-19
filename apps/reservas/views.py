@@ -4,7 +4,8 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from django_ratelimit import ratelimit
+from django_ratelimit.decorators import ratelimit
+
 from django.utils.decorators import method_decorator
 from datetime import datetime, timedelta, time as dt_time
 
