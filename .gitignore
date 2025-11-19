@@ -1,0 +1,56 @@
+# ───────────────────────────────────────────────
+# PYTHON / DJANGO
+# ───────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+*.sqlite3
+
+db.sqlite3
+
+# Virtual environments
+venv/
+env/
+
+# Django static & media
+
+media/
+
+# Local settings & environment
+*.local
+*.env
+.env
+
+# ───────────────────────────────────────────────
+# FRONTEND (se ignora porque va a Vercel)
+# ───────────────────────────────────────────────
+frontend/
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# ───────────────────────────────────────────────
+# OS / EDITORS
+# ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.qodo/
+
+# ───────────────────────────────────────────────
+# LOGS / TEMP
+# ───────────────────────────────────────────────
+*.log
+*.tmp
+*.temp
+*.swp
+
+# ───────────────────────────────────────────────
+# RENDER
+# ───────────────────────────────────────────────
+# (build.sh y Procfile NO se ignoran)
