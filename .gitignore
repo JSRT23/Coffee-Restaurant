@@ -10,7 +10,7 @@ __pycache__/
 *.sqlite3
 
 db.sqlite3
-
+package-lock.json
 # Virtual environments
 venv/
 env/
