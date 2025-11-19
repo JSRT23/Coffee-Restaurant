@@ -91,8 +91,10 @@ MIDDLEWARE = [
 ]
 
 # Permitir peticiones desde React
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # React Vite
+    "http://localhost:5173",  # React local
+    "https://coffee-oh7r9sflg-jsrt23s-projects.vercel.app",  # Vercel deploy
 ]
 
 # (opcional, para desarrollo)
