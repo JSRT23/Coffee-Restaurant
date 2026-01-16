@@ -26,14 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'RENDER' not in os.environ
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-
-ALLOWED_HOSTS = []
-
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+ALLOWED_HOSTS = [
+    "juansrt23.pythonanywhere.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 # Application definition
 
@@ -98,7 +97,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 # (opcional, para desarrollo)
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -173,7 +172,7 @@ STATIC_URL = 'static/'
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFIELDS_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 MEDIA_URL = '/media/'
@@ -192,5 +191,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'tucorreo@gmail.com'
 
 # https://support.google.com/accounts/answer/185833
-EMAIL_HOST_PASSWORD = 'tucontraseñadeapp'
-DEFAULT_FROM_EMAIL = 'tucorreo@gmail.com'
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")

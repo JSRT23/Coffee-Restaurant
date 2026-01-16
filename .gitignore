@@ -54,3 +54,4 @@ Thumbs.db
 # RENDER
 # ───────────────────────────────────────────────
 # (build.sh y Procfile NO se ignoran)
+.vercel
