@@ -7,9 +7,9 @@ __pycache__/
 *.pyd
 *.pdb
 *.egg-info/
-*.sqlite3
 
-db.sqlite3
+
+staticfiles/
 package.json
 # Virtual environments
 venv/

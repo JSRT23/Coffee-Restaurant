@@ -52,7 +52,7 @@ class ProductoVarianteInlineFormSet(BaseInlineFormSet):
             form.save_m2m()
         return obj
 
-# ---------- Inline ----------
+# ---------- Inline Variante ----------
 
 
 class ProductoVarianteInline(admin.TabularInline):
@@ -76,24 +76,57 @@ class ProductoAdmin(admin.ModelAdmin):
     ordering = ('nombre',)
     inlines = [ProductoVarianteInline]
 
-# ---------- ProductoVariante ----------
+# ---------- Producto Variante ----------
 
 
 @admin.register(ProductoVariante)
 class ProductoVarianteAdmin(admin.ModelAdmin):
     list_display = (
-        "id", "sku", "codigo_barras", "nombre_variante",
-        "stock_disponible_colored", "precio", "costo", "margen",
-        "ubicacion", "activo", "stock_bloqueado", "stock"
+        "id",
+        "producto_nombre",          # ✅ PRODUCTO PADRE
+        "nombre_variante",
+        "sku",
+        "codigo_barras",
+        "stock_disponible_colored",
+        "precio",
+        "costo",
+        "margen",
+        "stock",
+        "activo",
+        "stock_bloqueado",
+        "ubicacion",
     )
-    list_filter = ("producto__subcategoria__categoria", "ubicacion")
-    search_fields = ("sku", "codigo_barras",
-                     "nombre_variante", "producto__nombre")
-    readonly_fields = ("ultima_compra",)
-    actions = ["activar_seleccionados", "desactivar_seleccionados",
-               "ajustar_stock", "liberar_bloqueo"]
 
-    # --- VISUAL STOCK ---
+    list_filter = (
+        "producto__subcategoria__categoria",
+        "producto",
+        "ubicacion",
+        "activo",
+    )
+
+    search_fields = (
+        "sku",
+        "codigo_barras",
+        "nombre_variante",
+        "producto__nombre",
+    )
+
+    readonly_fields = ("ultima_compra",)
+
+    actions = [
+        "activar_seleccionados",
+        "desactivar_seleccionados",
+        "ajustar_stock",
+        "liberar_bloqueo",
+    ]
+
+    # ---------- PRODUCTO ----------
+    def producto_nombre(self, obj):
+        return obj.producto.nombre
+    producto_nombre.short_description = "Producto"
+    producto_nombre.admin_order_field = "producto__nombre"
+
+    # ---------- STOCK VISUAL ----------
     def stock_disponible_colored(self, obj):
         disponible = obj.stock_disponible
         if disponible <= 0:
@@ -102,13 +135,18 @@ class ProductoVarianteAdmin(admin.ModelAdmin):
             color, texto = "orange", f"{disponible} (bajo)"
         else:
             color, texto = "green", f"{disponible} (disp.)"
-        return format_html('<span style="color:{};font-weight:bold">{}</span>', color, texto)
+        return format_html(
+            '<span style="color:{};font-weight:bold">{}</span>',
+            color,
+            texto
+        )
     stock_disponible_colored.short_description = "Stock disp."
 
     def margen(self, obj):
         return f"{obj.margen:.1f} %" if obj.costo else "-"
+    margen.short_description = "Margen"
 
-    # --- ACCIONES ---
+    # ---------- ACCIONES ----------
     @transaction.atomic
     def ajustar_stock(self, request, queryset):
         if "apply" in request.POST:
@@ -117,9 +155,16 @@ class ProductoVarianteAdmin(admin.ModelAdmin):
                 variante.stock += cantidad
                 variante.save(update_fields=["stock"])
             self.message_user(
-                request, f"Stock ajustado en {cantidad} unidades.", messages.SUCCESS)
+                request,
+                f"Stock ajustado en {cantidad} unidades.",
+                messages.SUCCESS
+            )
             return
-        return render(request, "admin/ajuste_stock_intermediate.html", context={"variantes": queryset})
+        return render(
+            request,
+            "admin/ajuste_stock_intermediate.html",
+            context={"variantes": queryset}
+        )
     ajustar_stock.short_description = "🔧 Ajustar stock masivamente"
 
     def activar_seleccionados(self, request, queryset):
@@ -140,10 +185,12 @@ class ProductoVarianteAdmin(admin.ModelAdmin):
                 variante.stock_bloqueado = 0
                 variante.save(update_fields=['stock_bloqueado'])
         self.message_user(
-            request, f"Se liberaron {total} unidades bloqueadas.", messages.SUCCESS)
+            request,
+            f"Se liberaron {total} unidades bloqueadas.",
+            messages.SUCCESS
+        )
     liberar_bloqueo.short_description = "🔓 Liberar stock bloqueado"
 
     def save_model(self, request, obj, form, change):
         obj.clean()
-        obj.save()
         super().save_model(request, obj, form, change)

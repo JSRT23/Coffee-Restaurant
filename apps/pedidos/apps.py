@@ -6,4 +6,4 @@ class PedidosConfig(AppConfig):
     name = 'apps.pedidos'
 
     def ready(self):
-        import apps.pedidos.signals  # 👈 asegura que cargue
+        import apps.pedidos.signals  # 👈 asegura a que cargue

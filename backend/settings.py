@@ -52,10 +52,7 @@ INSTALLED_APPS = [
     'apps.usuarios',
     'apps.inventario',
     'apps.pedidos',
-    'apps.reservas',
-    'apps.finanzas',
-    'apps.notificaciones',
-
+    'apps.dashboard_admin',
 ]
 
 REST_FRAMEWORK = {
@@ -93,13 +90,15 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # React local
-    "https://coffee-oh7r9sflg-jsrt23s-projects.vercel.app",  # Vercel deploy
+    # "https://coffee-oh7r9sflg-jsrt23s-projects.vercel.app",  # Vercel deploy
+
 ]
 
 # (opcional, para desarrollo)
 CORS_ALLOW_ALL_ORIGINS = False
 
 ROOT_URLCONF = 'backend.urls'
+
 
 TEMPLATES = [
     {
@@ -126,7 +125,7 @@ DATABASES = {
 
 
     'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
+        default='sqlite:///Krazz.sqlite3',
         conn_max_age=600
     )
 
@@ -168,11 +167,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
-if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 MEDIA_URL = '/media/'

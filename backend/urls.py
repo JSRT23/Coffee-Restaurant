@@ -24,9 +24,7 @@ urlpatterns = [
     path('api/usuarios/', include('apps.usuarios.urls')),
     path('api/inventario/', include('apps.inventario.urls')),
     path('api/pedidos/', include('apps.pedidos.urls')),
-    path('api/reservas/', include('apps.reservas.urls')),
-    path('api/finanzas/', include('apps.finanzas.urls')),
-    path('api/notificaciones/', include('apps.notificaciones.urls')),
+    path("api/dashboard-admin/", include("apps.dashboard_admin.urls")),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

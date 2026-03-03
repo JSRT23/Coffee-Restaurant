@@ -101,7 +101,7 @@ class ProductoVarianteSerializer(serializers.ModelSerializer):
 
 
 class ProductosDisponiblesSerializer(serializers.ModelSerializer):
-    producto = ProductoSerializer(read_only=True)  # 👈 Aquí también lo anidamos
+    producto = ProductoSerializer(read_only=True)
 
     class Meta:
         model = ProductoVariante

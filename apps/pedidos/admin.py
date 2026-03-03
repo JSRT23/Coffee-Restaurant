@@ -4,7 +4,6 @@ from django.contrib import admin, messages
 from django.utils.html import format_html
 from django.db import transaction
 from django.core.exceptions import ValidationError
-from apps.finanzas.models import Credito
 from apps.inventario.models import ProductoVariante
 from .models import Pedido, EstadoPedido, MetodoPago, DetallePedido
 
@@ -91,40 +90,6 @@ class PedidoAdminForm(forms.ModelForm):
             total += price * cantidad
 
         return total
-
-    def clean(self):
-        cleaned = super().clean()
-        metodo = cleaned.get("metodo_pago")
-        cliente = cleaned.get("cliente")
-
-        if metodo and metodo.nombre and metodo.nombre.lower().strip() == "credito":
-            if not cliente:
-                self.add_error(
-                    "cliente", "Debe asignar un cliente para pagar con crédito.")
-                raise forms.ValidationError("Error de validación en crédito.")
-
-            credito = Credito.objects.filter(
-                cliente=cliente, estado__nombre="Activo").first()
-            if not credito:
-                self.add_error(
-                    "cliente", "El cliente no tiene un crédito activo aprobado.")
-                raise forms.ValidationError("Error de validación en crédito.")
-
-            if getattr(self, "request", None):
-                total = self._calcular_total_desde_post()
-            else:
-                try:
-                    total = self.instance.calcular_total()
-                except Exception:
-                    total = Decimal(self.instance.total or 0)
-
-            if total > credito.saldo:
-                self.add_error(
-                    "cliente", f"Saldo insuficiente en crédito. Saldo: {credito.saldo}, Total: {total}.")
-                raise forms.ValidationError(
-                    "El total del pedido supera el saldo disponible en el crédito.")
-
-        return cleaned
 
 
 # ---------- Pedido Admin ----------
