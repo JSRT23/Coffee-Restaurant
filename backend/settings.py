@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
-    "juansrt23.pythonanywhere.com",
+    # "juansrt23.pythonanywhere.com", el abywhere a cambiar
     "localhost",
     "127.0.0.1",
 ]
@@ -89,9 +89,8 @@ MIDDLEWARE = [
 # Permitir peticiones desde React
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # React local
-    # "https://coffee-oh7r9sflg-jsrt23s-projects.vercel.app",  # Vercel deploy
-
+    # "http://localhost:5173",  # React local
+    "https://krazz-ice.vercel.app",
 ]
 
 # (opcional, para desarrollo)

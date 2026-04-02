@@ -9,15 +9,13 @@ __pycache__/
 *.egg-info/
 
 
-staticfiles/
+
 package.json
 # Virtual environments
 venv/
 env/
 
-# Django static & media
 
-media/
 
 # Local settings & environment
 *.local
