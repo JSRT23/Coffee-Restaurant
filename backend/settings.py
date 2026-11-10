@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
     # "juansrt23.pythonanywhere.com", el abywhere a cambiar
     "localhost",
     "127.0.0.1",
-]
+] + [h.strip() for h in os.environ.get("ALLOWED_HOSTS", "").split(",") if h.strip()]
 
 # Application definition
 
@@ -91,7 +91,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     # "http://localhost:5173",  # React local
     "https://krazz-ice.vercel.app",
-]
+] + [o.strip() for o in os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",") if o.strip()]
 
 # (opcional, para desarrollo)
 CORS_ALLOW_ALL_ORIGINS = False
